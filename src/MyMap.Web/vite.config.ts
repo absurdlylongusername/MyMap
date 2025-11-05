@@ -3,16 +3,9 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, loadEnv } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-// export default defineConfig({
-//   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
-//   server: {
-//     port: 
-//   }
-// });
-
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-
+  const API = process.env.services__apiservice__https__0 || process.env.services__apiservice__http__0;
   return {
     plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
     server:{
@@ -20,10 +13,16 @@ export default defineConfig(({ mode }) => {
       proxy: {
         // "apiservice" is the name of the API in AppHost.cs.
         '/api': {
-          target: process.env.services__apiservice__https__0 || process.env.services__apiservice__http__0,
+          target: API,
           changeOrigin: true,
           secure: false,
           rewrite: (path) => path.replace(/^\/api/, '')
+        },
+        '/auth': {
+          target: API,
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/auth/, '')
         }
       }
     },
