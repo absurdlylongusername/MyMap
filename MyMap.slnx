@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MyMap.ApiService.Tests/MyMap.ApiService.Tests.csproj" />
+    <Project Path="src/MyMap.ApiService/MyMap.ApiService.csproj" />
+    <Project Path="src/MyMap.AppHost/MyMap.AppHost.csproj" />
+    <Project Path="src/MyMap.ServiceDefaults/MyMap.ServiceDefaults.csproj" />
+    <Project Path="src/MyMap.Web/MyMap.Web.csproj" />
+  </Folder>
+</Solution>

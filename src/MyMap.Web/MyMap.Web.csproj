@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NpmExec>npm</NpmExec>
+    <NpmWorkingDir>$(MSBuildProjectDirectory)</NpmWorkingDir>
+    <!-- Use npm ci when a lockfile is present; otherwise fall back to install -->
+    <HasPackageLockFile>$(Exists('$(NpmWorkingDir)\package-lock.json'))</HasPackageLockFile>
+  </PropertyGroup>
+
+  <!-- This project orchestrates npm install/build for the Vite React app. No C# sources are included. -->
+  <ItemGroup>
+    <Compile Remove="**/*" />
+    <None Include="package.json" />
+    <None Include="vite.config.ts" />
+    <None Include="tsconfig.json" />
+    <None Include="tsconfig.node.json" />
+  </ItemGroup>
+
+  <Target Name="NpmInstall" BeforeTargets="Build">
+    <Message Importance="High" Text="Running Node.js frontend install in $(NpmWorkingDir) (ci if lockfile present)" />
+    <Exec WorkingDirectory="$(NpmWorkingDir)" Command="$(NpmExec) --version" IgnoreExitCode="false" />
+    <Exec WorkingDirectory="$(NpmWorkingDir)" Command="node --version" IgnoreExitCode="false" />
+    <Exec WorkingDirectory="$(NpmWorkingDir)" Command="$(NpmExec) ci" Condition=" '$(HasPackageLockFile)' == 'True' " />
+    <Exec WorkingDirectory="$(NpmWorkingDir)" Command="$(NpmExec) install" Condition=" '$(HasPackageLockFile)' != 'True' " />
+  </Target>
+
+  <Target Name="NpmBuild" AfterTargets="Build" DependsOnTargets="NpmInstall">
+    <Message Importance="High" Text="Running npm run build in $(NpmWorkingDir)" />
+    <Exec WorkingDirectory="$(NpmWorkingDir)" Command="$(NpmExec) run build" />
+  </Target>
+
+</Project>

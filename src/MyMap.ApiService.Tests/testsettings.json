@@ -1,0 +1,5 @@
+{
+  "TestOptions": {
+    "ApiBaseUrl": "https://localhost:7449/"
+  }
+}
