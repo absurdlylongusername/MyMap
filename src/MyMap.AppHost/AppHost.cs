@@ -23,12 +23,11 @@ var apiService = builder.AddProject<Projects.MyMap_ApiService>("apiservice")
 var scalar = builder.AddScalarApiReference();
 scalar.WithApiReference(apiService);
 
-//var frontendName = "frontend";
-//builder.AddViteApp(frontendName, "../MyMap.Web")
-//    .WithReference(apiService)
-//    .WaitFor(apiService)
-//    .WithNpmPackageInstallation()
-//    .WithExternalHttpEndpoints();
+builder.AddViteApp("frontend", "../MyMap.Web")
+    .WithReference(apiService)
+    .WaitFor(apiService)
+    .WithNpmPackageInstallation()
+    .WithExternalHttpEndpoints();
 
 builder.Build().Run();
 
