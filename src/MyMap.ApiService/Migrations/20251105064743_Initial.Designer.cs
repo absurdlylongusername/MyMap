@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyMap.ApiService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251104185039_Initial")]
+    [Migration("20251105064743_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

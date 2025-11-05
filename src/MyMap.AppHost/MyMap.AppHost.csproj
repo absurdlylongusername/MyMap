@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Sdk Name="Aspire.AppHost.Sdk" Version="9.5.2" />
 
@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyMap.ApiService\MyMap.ApiService.csproj" />
-    <ProjectReference Include="..\MyMap.Web\MyMap.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,13 +7,13 @@ using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Bind TestUserOptions with validation (use nameof for section key)
+
 builder.Services
     .AddOptions<TestUserOptions>()
     .Bind(builder.Configuration.GetSection(nameof(TestUserOptions)))
-    .ValidateDataAnnotations()
     .Validate(o => !o.Enabled || (!string.IsNullOrWhiteSpace(o.Email) && !string.IsNullOrWhiteSpace(o.Password)),
               "When Enabled, Email and Password must be provided.")
+    .ValidateDataAnnotations()
     .ValidateOnStart();
 
 builder.ConfigureBuilder();
@@ -30,9 +30,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     await app.ConfigurePostgresLogging();
 }
-
-// Create a default test user if enabled in config
-await app.EnsureDefaultTestUserAsync();
 
 var auth = app.MapGroup("/auth");
 auth.MapIdentityApi<IdentityUser>();
@@ -102,6 +99,9 @@ using (var scope = app.Services.CreateScope())
     await db.Database.MigrateAsync();
 }
 
+// Create a default test user if enabled in config
+await app.EnsureDefaultTestUserAsync();
+
 string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
 
 app.MapGet("/weatherforecast", () =>
@@ -123,7 +123,6 @@ app.MapDefaultEndpoints();
 app.Run();
 
 public sealed record LoginRequest(string Email, string Password);
-
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
