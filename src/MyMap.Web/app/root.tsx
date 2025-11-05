@@ -7,10 +7,14 @@ import {
   ScrollRestoration,
 } from "react-router";
 
-import type { Route } from "./+types/root";
 import "./app.css";
+import "leaflet/dist/leaflet.css";
+import { TopBar } from "./components/layout/TopBar";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-export const links: Route.LinksFunction = () => [
+const queryClient = new QueryClient();
+
+export const links = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
@@ -33,7 +37,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <TopBar />
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -45,7 +52,7 @@ export default function App() {
   return <Outlet />;
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export function ErrorBoundary({ error }: any) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";
   let stack: string | undefined;

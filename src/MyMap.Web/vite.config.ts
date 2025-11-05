@@ -8,25 +8,23 @@ export default defineConfig(({ mode }) => {
   const API = process.env.services__apiservice__https__0 || process.env.services__apiservice__http__0;
   return {
     plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
-    server:{
+    server: {
       port: parseInt(env.VITE_PORT),
       proxy: {
         // "apiservice" is the name of the API in AppHost.cs.
         '/api': {
           target: API,
           changeOrigin: true,
-          secure: false,
-          rewrite: (path) => path.replace(/^\/api/, '')
+          secure: false
         },
         '/auth': {
           target: API,
           changeOrigin: true,
-          secure: false,
-          rewrite: (path) => path.replace(/^\/auth/, '')
+          secure: false
         }
       }
     },
-    build:{
+    build: {
       outDir: 'dist',
       rollupOptions: {
         input: './index.html'
